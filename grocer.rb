@@ -13,40 +13,45 @@ def consolidate_cart(cart)
   new_hash
 end
 
-def apply_coupons(cart, coupons = nil)
-  new_hash = {}
-  if coupons
-    coupons.each do |item|
-        item.each do |key, discount|
-          cart.each do |subkey, value|
-            new_hash[subkey] = value
-            if discount == subkey
-              if new_hash[subkey + " W/COUPON"].nil?
-                new_hash[subkey][:count] -= item[:num]
-                price = item[:cost] / item[:num]
-                new_hash[subkey + " W/COUPON"] = {:price => price,
-                :clearance => new_hash[subkey][:clearance],
-                :count => item[:num]}
-                if new_hash[subkey][:count] == 0
-                  new_hash.delete(subkey)
-                end
-              else
-                new_hash[subkey][:count] -= item[:num]
-                price = item[:cost] / item[:num]
-                new_hash[subkey + " W/COUPON"][:count] += item[:num]
-                if new_hash[subkey][:count] == 0
-                  new_hash.delete(subkey)
-                end
-              end
-            end
-          end
-        end
-    end
-  else
-    return cart
-  end
-  new_hash
-end
+# def apply_coupons(cart, coupons = nil)
+#   new_hash = {}
+#   if coupons
+#     coupons.each do |item|
+#         item.each do |key, discount|
+#           cart.each do |subkey, value|
+#             new_hash[subkey] = value
+#             if discount == subkey
+#               if new_hash[subkey + " W/COUPON"].nil?
+#                 new_hash[subkey][:count] -= item[:num]
+#                 price = item[:cost] / item[:num]
+#                 new_hash[subkey + " W/COUPON"] = {:price => price,
+#                 :clearance => new_hash[subkey][:clearance],
+#                 :count => item[:num]}
+#                 if new_hash[subkey][:count] == 0
+#                   new_hash.delete(subkey)
+#                 end
+#               else
+#                 new_hash[subkey][:count] -= item[:num]
+#                 price = item[:cost] / item[:num]
+#                 new_hash[subkey + " W/COUPON"][:count] += item[:num]
+#                 if new_hash[subkey][:count] == 0
+#                   new_hash.delete(subkey)
+#                 end
+#               end
+#             end
+#           end
+#         end
+#     end
+#   else
+#     return cart
+#   end
+#   new_hash
+# end
+
+def apply_coupons(cart, coupons)
+  coupons.each do |coupon|
+    item = coupon[:item]
+    if cart[item] && 
 
 def apply_clearance(cart)
   new_cart = {}
